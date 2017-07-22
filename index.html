@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bid Simulator</title>
+    <script src="storeData.js"></script>
+    <script>window.onload = function() {fillTA();}</script>
+    <link href="https://fonts.googleapis.com/css?family=Alike" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:500" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body onload="init()">
+<div class="navigation-title">
+    <div class="navi-div"><h1>Simulated Bid System</h1></div>
+    <div class="navi-div"><h3>Current Time:</h3></div>
+    <div class="navi-div"><h3 id="timeLabel"><script> document.write(new Date().toLocaleTimeString()); </script></h3></div>
+</div>
+
+<div class="bidders">
+    <button class="b-bid" type="button" onclick="bidder1()">Bidder 1</button>
+    <button class="b-bid" type="button" onclick="bidder2()">Bidder 2</button>
+    <button class="b-bid" type="button" onclick="bidder3()">Bidder 3</button>
+    <button class="b-bid" type="button" onclick="bidder4()">Bidder 4</button>
+    <button class="b-bid" type="button" onclick="bidder5()">Bidder 5</button>
+</div>
+
+<div class="queue-textarea">
+    <textarea id="qta" disabled rows="3" cols="25" title="Live Auction" ></textarea>
+</div>
+
+<div class="auction-buttons">
+    <div class="startAuction">
+        <button onclick="inProgressAlert()">Start Auction</button>
+    </div>
+    <div class="resetAuction">
+        <button onclick="resetAuction()">Reset Auction</button>
+    </div>
+    <div class="endAuction">
+        <button onclick="endAuction()">End Auction</button>
+    </div>
+</div>
+
+<div id="final-textarea" class="final-ta">
+    <textarea id="fta" disabled rows="4" cols="25" title="Number of Auctions" ></textarea>
+</div>
+</body>
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+        overflow-y: auto;
+        background-color: #F7F2F2;
+    }
+    h1 {
+        margin: 0;
+        padding: 20px 0 20px 0;
+        font-size: 3em;
+    }
+    h3 {
+        margin: 0;
+        display: inline-block;
+        font-size: 1.5em;
+    }
+    #timeLabel {
+        display: inline-block;
+        font-size: 1.5em;
+    }
+    .navi-div {
+        margin: 0;
+        padding: 0;
+        display: inline;
+    }
+    .navigation-title {
+        margin: 0;
+        font-family: 'Alike', serif;
+        text-align: center;
+        background-color: #F7F2F2;
+        width: 100%;
+        padding-bottom: 20px;
+    }
+    .bidders {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+    .queue-textarea {
+        text-align: center;
+    }
+    .auction-buttons {
+        font-size: 0;
+        width: 100%;
+        margin-top: 20px;
+        text-align: center;
+    }
+    .auction-buttons button {
+        margin-top: 5px;
+    }
+    #final-textarea {
+        display: none;
+    }
+    .final-ta {
+        margin-top: 20px;
+        text-align: center;
+    }
+    .final-ta textarea {
+        background-color: #CC2936;
+        color: #FFFFFF;
+        text-align: center;
+    }
+    .startAuction {
+        margin-right: 5px;
+        display: inline-block;
+    }
+    .startAuction button {
+        /*background-color: #1c8c4c;*/
+        background-color: lightgrey;
+        padding: 12px 64px;
+    }
+    .startAuction button:hover, .startAuction button:focus {
+        /*background-color: #0f4c29;*/
+        background-color: slategray;
+    }
+    .resetAuction {
+        display: inline-block;
+        margin: 0 5px 0 auto;
+    }
+    .resetAuction button {
+        background-color: #ffab01;
+        padding: 12px 64px;
+    }
+    .resetAuction button:hover, .resetAuction button:focus {
+        background-color: #9e6a00;
+    }
+    .endAuction {
+        margin-right: 5px;
+        display: inline-block;
+    }
+    .endAuction button {
+        background-color: #CC2936;
+        padding: 12px 64px;
+    }
+    .endAuction button:hover, .endAuction button:focus {
+        background-color: #4B0F14;
+    }
+    button {
+        font-family: 'Roboto', sans-serif;
+        -webkit-transition-duration: 0.3s;
+        transition-duration: 0.3s;
+        background-color: #08415C;
+        color: white;
+        padding: 12px 30px;
+        font-size: 16px;
+        border: 0;
+    }
+    button:hover, button:focus {
+        background-color: #041E2A;
+    }
+    @keyframes flash {
+        0% {
+            background-color: #D85D69;
+            color: #D85D69;
+        }
+        100% {
+            background-color: #FFFFFF;
+            color: #39455A;
+        }
+    }
+    textarea {
+        resize: none;
+        margin: 0 auto;
+        color: #39455A;
+        background-color: #FFFFFF;
+    }
+    @media only screen and (max-width: 768px) {
+        h1 {
+            font-size: 2em;
+            width: 100%;
+        }
+
+        .navi-div {
+            display: block;
+        }
+
+        .bidders {
+            margin-top: 0px;
+            width: 100%;
+        }
+
+        button {
+            margin-top: 0;
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .auction-buttons {
+            width: 100%;
+            display: block;
+        }
+
+        .auction-buttons button {
+            width: 60%;
+        }
+
+        .startAuction {
+            width: 100%;
+        }
+
+        .resetAuction {
+            width: 100%;
+        }
+
+        .endAuction {
+            width: 100%;
+        }
+    }
+</style>
+
+</html>
